@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUT Request with User ID and Update Data</title>
+</head>
+
+<body>
+    <h1>you have been succeffully logged in </h1>
+
+    <div>
+        chang informtion entirely
+    </div>
+    <form id="myForm">
+
+        <label for="email">Enter the email you want to update ..</label>
+        <input type="email" id="email1" name="email" required>
+
+        <h1>Enter the data you want to be replaced with</h1>
+
+        <label for="name">New Email:</label>
+        <input type="name" id="name" name="name">
+        <label for="email">New Email:</label>
+        <input type="email" id="email" name="email">
+        <label for="password">New Email:</label>
+        <input type="password" id="password" name="password">
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get userId from the input field
+            const userId = document.getElementById('email1').value;
+            console.log(userId)
+            // Collect update data from the form
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Build the update URL with the userId as a path parameter
+            const updateUrl = `http://localhost:3000/auth/updatingInfo/${userId}`;
+
+            // Send the PUT request with the update data in the body
+            fetch(updateUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data) // Send the update data (e.g., name, email) in the request body
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+
+</body>
+
+</html>
